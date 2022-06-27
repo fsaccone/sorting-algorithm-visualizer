@@ -14,6 +14,16 @@ export class SortChooseList {
     this.setupDomNode();
   }
 
+  public resetSelectedDomDataset(): void {
+    this.domNode.childNodes.forEach(mChildNode => {
+      if (!(mChildNode instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      mChildNode.dataset['selected'] = 'false';
+    });
+  }
+
   private setupDomNode(): void {
     this.domNode.classList.add('sort-choose-list');
     this.resetSelectedDomDataset();
@@ -34,15 +44,5 @@ export class SortChooseList {
 
       this.domNode.append(domNode);
     }
-  }
-
-  private resetSelectedDomDataset(): void {
-    this.domNode.childNodes.forEach(mChildNode => {
-      if (!(mChildNode instanceof HTMLButtonElement)) {
-        return;
-      }
-
-      mChildNode.dataset['selected'] = 'false';
-    });
   }
 }

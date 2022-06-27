@@ -4,8 +4,8 @@ export declare class SortChooseList {
     readonly domNode: HTMLDivElement;
     private readonly _sortAlgoritms;
     constructor(setSelectedAlgorithm: (alg: SortingAlgorithm) => void);
+    resetSelectedDomDataset(): void;
     private setupDomNode;
     private appendSelectButtons;
-    private resetSelectedDomDataset;
 }
 //# sourceMappingURL=sort-choose-list.d.ts.map

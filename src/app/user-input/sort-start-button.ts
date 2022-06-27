@@ -26,8 +26,8 @@ export class SortStartButton {
   }
 
   private startAlgorithm(alg: SortingAlgorithm | null): void {
-    const sortAlgArgs = [
-      SORTING_VISUALIZER.array,
+    const getArray = (): number[] => SORTING_VISUALIZER.array;
+    const sortAlgArgFuncs = [
       (i: number, j: number) => {
         SORTING_VISUALIZER.addSwapArrayValuesToQueue(i, j);
       },
@@ -37,14 +37,14 @@ export class SortStartButton {
     ] as const;
 
     if (alg === SortingAlgorithm.BUBBLE) {
-      const bubble = new Bubble(...sortAlgArgs);
+      const bubble = new Bubble(getArray(), ...sortAlgArgFuncs);
 
       bubble.run();
       this.blockInput();
     }
 
     if (alg === SortingAlgorithm.INSERTION) {
-      const insertion = new Insertion(...sortAlgArgs);
+      const insertion = new Insertion(getArray(), ...sortAlgArgFuncs);
 
       insertion.run();
       this.blockInput();

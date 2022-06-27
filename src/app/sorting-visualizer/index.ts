@@ -34,16 +34,12 @@ export class SortingVisualizer {
   public startSwapping(): void {
     this._hasStartedSorting = true;
 
-    let i = 0;
-
-    setInterval(() => {
-      const swap = this._swapQueue[i];
+    const loopSwapQueue = setInterval(() => {
+      const swap = this._swapQueue.shift();
 
       if (!swap) {
         return;
       }
-
-      i++;
 
       const [indexOne, indexTwo] = swap;
 
@@ -81,8 +77,9 @@ export class SortingVisualizer {
 
       this.playSound(this._array[indexOne] ?? 0);
 
-      if (i === this._swapQueue.length) {
+      if (this._swapQueue.length <= 0) {
         this.finishSorting();
+        clearInterval(loopSwapQueue);
       }
     }, ((1000 / this.arraySize) + this._swapMillisecondsNeeded));
   }
@@ -94,17 +91,17 @@ export class SortingVisualizer {
     }
 
     setTimeout(() => {
+      this._swapQueue = [];
+      this._hasStartedSorting = false;
+      USER_INPUT.unblockResetArray();
+    }, this._finishedSortingDelayMilliseconds
+      + ((1000 / this.arraySize) * this.domNode.childNodes.length));
+    setTimeout(() => {
       this.domNode.childNodes.forEach((mChildNode, i) => {
         setTimeout(() => {
           if (mChildNode instanceof HTMLElement) {
             this.playSound(Number(mChildNode.dataset['value']));
             mChildNode.dataset['state'] = 'completed';
-          }
-
-          if (i === this.domNode.childNodes.length - 1) {
-            this._swapQueue = [];
-            this._hasStartedSorting = false;
-            USER_INPUT.unblockResetArray();
           }
         }, (1000 / this.arraySize) * i);
       });
@@ -113,8 +110,6 @@ export class SortingVisualizer {
 
   public resetArray(): void {
     this.array = [];
-    this._swapQueue = [];
-    this._hasStartedSorting = false;
     USER_INPUT.unblockInput();
 
     for (let i = 0; i < this.arraySize; i++) {

@@ -65,7 +65,7 @@ module.exports = {
       template: resolve(__dirname, './static/index.html'),
       favicon: resolve(__dirname, './static/favicon.png')
     }),
-    new MiniCssExtractPlugin({ filename: '[hash].css' })
+    new MiniCssExtractPlugin({ filename: '[contenthash].css' })
   ],
   target: ['web', 'es5'],
   mode: 'production'

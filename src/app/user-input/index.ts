@@ -36,6 +36,8 @@ export class UserInput {
   public unblockInput(): void {
     this.domNode.style.pointerEvents = 'auto';
     this.domNode.dataset['blocked'] = 'false';
+    this.selectedAlgorithm = null;
+    this.children['sort-choose-list'].resetSelectedDomDataset();
   }
 
   public unblockResetArray(): void {
