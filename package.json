@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "npm run lint && webpack && tsc",
+    "cleaninstall": "npm ci",
+    "config": "npm install",
+    "dev": "webpack serve --open --mode development",
+    "lint": "eslint . --fix && stylelint . --fix"
+  },
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "@babel/preset-typescript": "*",
+    "@typescript-eslint/parser": "*",
+    "babel-loader": "*",
+    "clean-webpack-plugin": "*",
+    "css-loader": "*",
+    "eslint-config-fsaccone": "*",
+    "html-webpack-plugin": "*",
+    "mini-css-extract-plugin": "*",
+    "stylelint": "*",
+    "stylelint-order": "*",
+    "typescript": "*",
+    "webpack": "*",
+    "webpack-cli": "*",
+    "webpack-dev-server": "*"
+  }
+}

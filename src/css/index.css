@@ -1,0 +1,13 @@
+html,
+body
+{
+  background: fixed #50aff5ff;
+  border: 0;
+  height: 100%;
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  user-select: none;
+  width: 100%;
+}

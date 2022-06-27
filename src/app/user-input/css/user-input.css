@@ -1,0 +1,133 @@
+.user-input
+{
+  align-items: center;
+  background: fixed #488de1ff;
+  display: flex;
+  flex-direction: row;
+  gap: 10%;
+  height: 20vmin;
+  justify-content: space-around;
+  width: 100vw;
+}
+
+.user-input[data-blocked='true']
+{
+  filter: grayscale(1);
+}
+
+.user-input *:not(.set-array-size-range)
+{
+  filter: inherit;
+}
+
+.set-array-size-range
+{
+  appearance: none;
+  background: fixed #222222ff;
+  border: none;
+  height: 2px;
+  margin-left: 5px;
+  width: calc(30% - 5px);
+}
+
+.set-array-size-range::-moz-range-thumb
+{
+  background: fixed #444444ff;
+  border: 0;
+  border-radius: 0;
+  cursor: grab;
+  height: 20px;
+  transition: 0.2s;
+  width: 8px;
+}
+
+.set-array-size-range::-webkit-slider-thumb
+{
+  background: fixed #444444ff;
+  border: 0;
+  border-radius: 0;
+  cursor: grab;
+  height: 20px;
+  transition: 0.2s;
+  width: 8px;
+}
+
+.set-array-size-range::-moz-range-thumb:hover
+{
+  transform: scale(1.8);
+}
+
+.set-array-size-range::-webkit-slider-thumb:hover
+{
+  transform: scale(1.8);
+}
+
+.sort-start-button
+{
+  aspect-ratio: 1 / 1;
+  background: none;
+  border: solid #fccaa9ff 4px;
+  border-radius: 50%;
+  height: 80%;
+  transition: 0.1s;
+}
+
+.sort-start-button > img
+{
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.sort-start-button:hover
+{
+  filter: opacity(0.9);
+}
+
+.sort-start-button:active
+{
+  transform: scale(0.98);
+}
+
+.sort-choose-list
+{
+  align-items: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row wrap;
+  flex-grow: 2;
+  height: 70%;
+  justify-content: center;
+  width: 60%;
+}
+
+.sort-choose-list > button
+{
+  background: fixed #444444ff;
+  border: 0;
+  border-radius: 10px;
+  color: #ccccccff;
+  flex-grow: 1;
+  font-family:
+    'Righteous',
+    cursive;
+  font-size: 0.86em;
+  height: 50%;
+  margin: 1%;
+  transition: 0.1s;
+}
+
+.sort-choose-list > button[data-selected='true']
+{
+  background-color: #44aa44ff;
+  color: #333333ff;
+}
+
+.sort-choose-list > button:hover
+{
+  filter: opacity(0.85);
+}
+
+.sort-choose-list > button:active
+{
+  transform: scaleX(0.98);
+}
