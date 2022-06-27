@@ -16,6 +16,7 @@ export declare class UserInput {
     constructor();
     blockInput(): void;
     unblockInput(): void;
+    unblockResetArray(): void;
     private setupDomNode;
     private getSelectedAlgorithm;
     private setSelectedAlgorithm;

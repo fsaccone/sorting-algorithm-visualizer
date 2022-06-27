@@ -93,17 +93,19 @@ export class SortingVisualizer {
       return;
     }
 
-    this._swapQueue = [];
-    this._hasStartedSorting = false;
     setTimeout(() => {
       this.domNode.childNodes.forEach((mChildNode, i) => {
-        if (!(mChildNode instanceof HTMLElement)) {
-          return;
-        }
-
         setTimeout(() => {
-          this.playSound(Number(mChildNode.dataset['value']));
-          mChildNode.dataset['state'] = 'completed';
+          if (mChildNode instanceof HTMLElement) {
+            this.playSound(Number(mChildNode.dataset['value']));
+            mChildNode.dataset['state'] = 'completed';
+          }
+
+          if (i === this.domNode.childNodes.length - 1) {
+            this._swapQueue = [];
+            this._hasStartedSorting = false;
+            USER_INPUT.unblockResetArray();
+          }
         }, (1000 / this.arraySize) * i);
       });
     }, this._finishedSortingDelayMilliseconds);
@@ -152,7 +154,7 @@ export class SortingVisualizer {
   private playSound(value: number): void {
     const audioCtx = new AudioContext();
     const frequency = Math.floor(value / this.arraySize * 275);
-    const volume = 1e-2;
+    const volume = 3e-2;
     const durationMs = 50;
     const oscillator = new OscillatorNode(audioCtx);
     const gainNode = new GainNode(audioCtx);

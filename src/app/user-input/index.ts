@@ -30,13 +30,16 @@ export class UserInput {
 
   public blockInput(): void {
     this.domNode.style.pointerEvents = 'none';
-    this.children['set-array-size-range'].domNode.style.pointerEvents = 'auto';
     this.domNode.dataset['blocked'] = 'true';
   }
 
   public unblockInput(): void {
     this.domNode.style.pointerEvents = 'auto';
     this.domNode.dataset['blocked'] = 'false';
+  }
+
+  public unblockResetArray(): void {
+    this.children['set-array-size-range'].domNode.style.pointerEvents = 'auto';
   }
 
   private setupDomNode(): void {

@@ -15,7 +15,7 @@
   filter: grayscale(1);
 }
 
-.user-input *:not(.set-array-size-range)
+.user-input *
 {
   filter: inherit;
 }
