@@ -2,8 +2,10 @@
 import { SortingVisualizer } from 'app/sorting-visualizer';
 import { UserInput } from 'app/user-input';
 export declare enum SortingAlgorithm {
-    BUBBLE = 0,
-    INSERTION = 1
+    QUICK = 0,
+    BUBBLE = 1,
+    INSERTION = 2,
+    SELECTION = 3
 }
 export declare const USER_INPUT: UserInput;
 export declare const SORTING_VISUALIZER: SortingVisualizer;

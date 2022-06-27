@@ -4,8 +4,10 @@ export class SortChooseList {
   public readonly domNode = document.createElement('div');
 
   private readonly _sortAlgoritms = {
+    quick: SortingAlgorithm.QUICK,
     bubble: SortingAlgorithm.BUBBLE,
-    insertion: SortingAlgorithm.INSERTION
+    insertion: SortingAlgorithm.INSERTION,
+    selection: SortingAlgorithm.SELECTION
   };
 
   public constructor(

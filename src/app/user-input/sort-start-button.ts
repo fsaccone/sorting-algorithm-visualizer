@@ -1,5 +1,6 @@
-import { Bubble, Insertion } from 'logic';
+import { Bubble, Insertion, Quick, SelectionAlg } from 'logic';
 import { SORTING_VISUALIZER, SortingAlgorithm } from 'index';
+import type { SortingAlgorithm as SortAlgorithmType } from 'logic/sorting-algorithm';
 import startSvg from './svg/start.svg';
 
 export class SortStartButton {
@@ -26,8 +27,8 @@ export class SortStartButton {
   }
 
   private startAlgorithm(alg: SortingAlgorithm | null): void {
-    const getArray = (): number[] => SORTING_VISUALIZER.array;
-    const sortAlgArgFuncs = [
+    const sortAlgArgs = [
+      SORTING_VISUALIZER.array,
       (i: number, j: number) => {
         SORTING_VISUALIZER.addSwapArrayValuesToQueue(i, j);
       },
@@ -35,18 +36,26 @@ export class SortStartButton {
         SORTING_VISUALIZER.finishSorting();
       }
     ] as const;
+    let algorithm: SortAlgorithmType | null = null;
 
-    if (alg === SortingAlgorithm.BUBBLE) {
-      const bubble = new Bubble(getArray(), ...sortAlgArgFuncs);
-
-      bubble.run();
-      this.blockInput();
+    switch (alg) {
+      case SortingAlgorithm.QUICK:
+        algorithm = new Quick(...sortAlgArgs);
+        break;
+      case SortingAlgorithm.BUBBLE:
+        algorithm = new Bubble(...sortAlgArgs);
+        break;
+      case SortingAlgorithm.INSERTION:
+        algorithm = new Insertion(...sortAlgArgs);
+        break;
+      case SortingAlgorithm.SELECTION:
+        algorithm = new SelectionAlg(...sortAlgArgs);
+        break;
+      default:
     }
 
-    if (alg === SortingAlgorithm.INSERTION) {
-      const insertion = new Insertion(getArray(), ...sortAlgArgFuncs);
-
-      insertion.run();
+    if (algorithm) {
+      algorithm.run();
       this.blockInput();
     }
   }
