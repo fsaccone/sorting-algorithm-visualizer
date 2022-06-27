@@ -1,5 +1,5 @@
 {
-  "extends": "fsaccone",
+  "extends": "@fsaccone",
   "env": {
     "browser": true,
     "es6": true
