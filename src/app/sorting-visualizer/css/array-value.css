@@ -20,12 +20,18 @@
 
 .array-value
 {
-  border: solid 0.5px #50aff5ff;
+  transition-property: height;
+  transition-timing-function: ease-in-out;
 }
 
-.array-value[data-state='static']
+.array-value[data-state='static']:nth-child(2n)
 {
   background: fixed #d6b136ff;
+}
+
+.array-value[data-state='static']:nth-child(2n-1)
+{
+  background: fixed #d6cc36ff;
 }
 
 .array-value[data-state='processing']

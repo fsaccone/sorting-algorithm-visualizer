@@ -2,8 +2,8 @@ import { SORTING_VISUALIZER } from 'index';
 
 export class SetArraySizeRange {
   public readonly domNode = document.createElement('input');
-  public readonly minSize = 10;
-  public readonly maxSize = 100;
+  public readonly minSize = 8;
+  public readonly maxSize = 1000;
 
   public constructor() {
     this.setupDomNode();

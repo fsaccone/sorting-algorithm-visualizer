@@ -1,6 +1,6 @@
 import './css/user-input.css';
 import { SetArraySizeRange } from './set-array-size-range';
-import { SortChooseList } from './sort-choose-list';
+import { SortChooseListButton } from './sort-choose-list-button';
 import { SortStartButton } from './sort-start-button';
 import type { SortingAlgorithm } from 'index';
 
@@ -10,15 +10,15 @@ export class UserInput {
   public domNode = document.createElement('div');
   public children = {
     'set-array-size-range': new SetArraySizeRange(),
+    'sort-choose-list': new SortChooseListButton(alg => {
+      this.setSelectedAlgorithm(alg);
+    }, this.domNode),
     'sort-start-button': new SortStartButton(
         () => this.getSelectedAlgorithm(),
         () => {
           this.blockInput();
         }
-    ),
-    'sort-choose-list': new SortChooseList(alg => {
-      this.setSelectedAlgorithm(alg);
-    })
+    )
   };
 
   public setArraySizeRange = this.children['set-array-size-range'];
@@ -31,6 +31,7 @@ export class UserInput {
   public blockInput(): void {
     this.domNode.style.pointerEvents = 'none';
     this.domNode.dataset['blocked'] = 'true';
+    this.children['sort-choose-list'].hideSortList();
   }
 
   public unblockInput(): void {
@@ -38,10 +39,6 @@ export class UserInput {
     this.domNode.dataset['blocked'] = 'false';
     this.selectedAlgorithm = null;
     this.children['sort-choose-list'].resetSelectedDomDataset();
-  }
-
-  public unblockResetArray(): void {
-    this.children['set-array-size-range'].domNode.style.pointerEvents = 'auto';
   }
 
   private setupDomNode(): void {

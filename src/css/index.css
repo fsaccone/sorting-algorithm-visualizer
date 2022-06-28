@@ -3,6 +3,7 @@ body
 {
   background: fixed #50aff5ff;
   border: 0;
+  box-sizing: border-box;
   height: 100%;
   margin: 0;
   outline: none;
@@ -10,4 +11,17 @@ body
   padding: 0;
   user-select: none;
   width: 100%;
+}
+
+*:not(html):not(body)
+{
+  box-sizing: inherit;
+  outline: inherit;
+  user-select: inherit;
+}
+
+img
+{
+  max-height: 100%;
+  max-width: 100%;
 }

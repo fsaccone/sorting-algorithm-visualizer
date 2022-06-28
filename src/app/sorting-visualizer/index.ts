@@ -6,10 +6,11 @@ export class SortingVisualizer {
   public domNode = document.createElement('div');
 
   private _array: number[] = [];
-  private _hasStartedSorting = false;
+  private _hasStartedSortVisualizing = false;
   private _swapQueue: [number, number][] = [];
   private readonly _swapMillisecondsNeeded = 100;
   private readonly _finishedSortingDelayMilliseconds = 1000;
+  private readonly _finishAnimationFinishedIdleMilliseconds = 1000;
 
   public get array(): number[] {
     return this._array;
@@ -32,7 +33,7 @@ export class SortingVisualizer {
   }
 
   public startSwapping(): void {
-    this._hasStartedSorting = true;
+    this._hasStartedSortVisualizing = true;
 
     const loopSwapQueue = setInterval(() => {
       const swap = this._swapQueue.shift();
@@ -59,23 +60,31 @@ export class SortingVisualizer {
         childOne.dataset['state'] = 'processing';
         childTwo.dataset['state'] = 'processing';
         setTimeout(() => {
-          const childOnePreviousSibling = childOne.previousSibling;
-
-          childTwo.insertAdjacentElement('beforebegin', childOne);
-
-          if (indexOne === 0) {
-            this.domNode.insertBefore(childTwo, this.domNode.firstChild);
-          } else {
-            childOnePreviousSibling?.after(childTwo);
-          }
+          [
+            childOne.style.width,
+            childOne.style.height,
+            childTwo.style.width,
+            childTwo.style.height,
+            childOne.dataset['value'],
+            childTwo.dataset['value']
+          ] = [
+            childTwo.style.width,
+            childTwo.style.height,
+            childOne.style.width,
+            childOne.style.height,
+            childTwo.dataset['value'],
+            childOne.dataset['value']
+          ];
         }, this._swapMillisecondsNeeded / 2);
         setTimeout(() => {
           childOne.dataset['state'] = 'static';
           childTwo.dataset['state'] = 'static';
-        }, this._swapMillisecondsNeeded / 2);
+        }, this._swapMillisecondsNeeded);
       }
 
-      this.playSound(this._array[indexOne] ?? 0);
+      this.playSound(
+          ((this._array[indexOne] ?? 0) + (this._array[indexTwo] ?? 0)) / 2
+      );
 
       if (this._swapQueue.length <= 0) {
         this.finishSorting();
@@ -85,23 +94,26 @@ export class SortingVisualizer {
   }
 
   public finishSorting(): void {
-    if (!this._hasStartedSorting) {
+    if (!this._hasStartedSortVisualizing) {
       this.startSwapping();
       return;
     }
 
-    setTimeout(() => {
-      this._swapQueue = [];
-      this._hasStartedSorting = false;
-      USER_INPUT.unblockResetArray();
-    }, this._finishedSortingDelayMilliseconds
-      + ((1000 / this.arraySize) * this.domNode.childNodes.length));
+    this._swapQueue = [];
+    this._hasStartedSortVisualizing = false;
     setTimeout(() => {
       this.domNode.childNodes.forEach((mChildNode, i) => {
         setTimeout(() => {
           if (mChildNode instanceof HTMLElement) {
             this.playSound(Number(mChildNode.dataset['value']));
             mChildNode.dataset['state'] = 'completed';
+          }
+
+          if (i === this.domNode.childNodes.length - 1) {
+            setTimeout(() => {
+              this.resetArray();
+              USER_INPUT.unblockInput();
+            }, this._finishAnimationFinishedIdleMilliseconds);
           }
         }, (1000 / this.arraySize) * i);
       });
@@ -110,7 +122,6 @@ export class SortingVisualizer {
 
   public resetArray(): void {
     this.array = [];
-    USER_INPUT.unblockInput();
 
     for (let i = 0; i < this.arraySize; i++) {
       const randomNumber = Math.floor((Math.random() * this.arraySize) + 1);
@@ -135,22 +146,21 @@ export class SortingVisualizer {
   }
 
   private createArrayValues(): void {
-    requestAnimationFrame(() => {
-      this.domNode.innerText = '';
+    this.domNode.innerText = '';
 
-      for (const value of this.array) {
-        const arrayValue = new ArrayValue(this.domNode, this.arraySize, value);
+    for (const value of this.array) {
+      const arrayValue = new ArrayValue(this.domNode, this.arraySize, value);
 
-        this.domNode.append(arrayValue.domNode);
-      }
-    });
+      this.domNode.append(arrayValue.domNode);
+    }
   }
 
   private playSound(value: number): void {
     const audioCtx = new AudioContext();
-    const frequency = Math.floor(value / this.arraySize * 275);
-    const volume = 3e-2;
+    const frequency = Math.floor((value / this.arraySize) * 400);
+    const volume = 1e-2;
     const durationMs = 50;
+    const stoppingSoundDurationMs = durationMs / 10;
     const oscillator = new OscillatorNode(audioCtx);
     const gainNode = new GainNode(audioCtx);
 
@@ -162,7 +172,14 @@ export class SortingVisualizer {
         .connect(audioCtx.destination);
     oscillator.start();
     setTimeout(() => {
-      oscillator.stop();
-    }, durationMs);
+      const stoppingSound = setInterval(() => {
+        gainNode.gain.value -= volume / 10;
+
+        if (gainNode.gain.value <= 0) {
+          oscillator.stop();
+          clearInterval(stoppingSound);
+        }
+      }, stoppingSoundDurationMs / 10);
+    }, durationMs - stoppingSoundDurationMs);
   }
 }

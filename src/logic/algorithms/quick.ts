@@ -1,19 +1,8 @@
-import { SortingAlgorithm, type TArray, type TFinish, type TSwap } from 'logic/sorting-algorithm';
+import { SortingAlgorithm } from 'logic/sorting-algorithm';
 
 export class Quick extends SortingAlgorithm {
-  public constructor(
-      protected readonly array: TArray,
-      protected readonly swap: TSwap,
-      protected readonly finish: TFinish
-  ) {
-    super();
-  }
-
-  public run(): number[] {
-    const sorted = this.quickSort(this.array, 0, this.array.length - 1);
-
-    this.finish();
-    return sorted;
+  protected sort(): void {
+    this.quickSort(this.array, 0, this.array.length - 1);
   }
 
   private quickSort(arr: number[], start: number, end: number): number[] {
@@ -36,24 +25,19 @@ export class Quick extends SortingAlgorithm {
 
   private partition(mArr: number[], idxOne: number, idxTwo: number): number {
     let [i, j] = [idxOne, idxTwo];
-    const middleIdx = mArr[Math.floor((i + j) / 2)]!;
+    const pivot = mArr[Math.floor((i + j) / 2)]!;
 
     while (i <= j) {
-      while (mArr[i]! < middleIdx) {
+      while (mArr[i]! < pivot) {
         i++;
       }
 
-      while (mArr[j]! > middleIdx) {
+      while (mArr[j]! > pivot) {
         j--;
       }
 
       if (i <= j) {
         this.swap(i, j);
-
-        const firstValue = mArr[i]!;
-
-        mArr[i] = mArr[j]!;
-        mArr[j] = firstValue;
         i++;
         j--;
       }

@@ -35,11 +35,11 @@
     "maxNodeModuleJsDepth": 1,
 
     "declaration": true,
-    "declarationDir": "./docs/types",
+    "declarationDir": "./build/types",
     "declarationMap": true,
     "emitDeclarationOnly": true,
     "sourceMap": true,
-    "outDir": "./docs",
+    "outDir": "./build",
     "removeComments": true,
     "noEmit": false,
     "importHelpers": true,

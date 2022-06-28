@@ -1,15 +1,7 @@
-import { SortingAlgorithm, type TArray, type TFinish, type TSwap } from 'logic/sorting-algorithm';
+import { SortingAlgorithm } from 'logic/sorting-algorithm';
 
 export class SelectionAlg extends SortingAlgorithm {
-  public constructor(
-      protected readonly array: TArray,
-      protected readonly swap: TSwap,
-      protected readonly finish: TFinish
-  ) {
-    super();
-  }
-
-  public run(): number[] {
+  protected sort(): void {
     for (let i = 0; i < this.array.length; i++) {
       let minIdx = i;
 
@@ -21,15 +13,7 @@ export class SelectionAlg extends SortingAlgorithm {
 
       if (minIdx !== i) {
         this.swap(i, minIdx);
-
-        const firstValue = this.array[i]!;
-
-        this.array[i] = this.array[minIdx]!;
-        this.array[minIdx] = firstValue;
       }
     }
-
-    this.finish();
-    return this.array;
   }
 }

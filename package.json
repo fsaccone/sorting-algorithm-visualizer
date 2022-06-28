@@ -1,11 +1,14 @@
 {
   "private": true,
+  "homepage": "https://fsaccone.github.io/sorting-algorithm-visualizer/",
   "scripts": {
     "build": "npm run lint && webpack && tsc",
     "cleaninstall": "npm ci",
     "config": "npm install",
     "dev": "webpack serve --open --mode development",
-    "lint": "eslint . --fix && stylelint . --fix"
+    "lint": "eslint . --fix && stylelint . --fix",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "@babel/core": "*",
@@ -16,6 +19,8 @@
     "babel-loader": "*",
     "clean-webpack-plugin": "*",
     "css-loader": "*",
+    "css-minimizer-webpack-plugin": "^4.0.0",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "*",
     "mini-css-extract-plugin": "*",
     "stylelint": "*",

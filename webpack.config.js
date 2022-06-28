@@ -2,6 +2,7 @@ const { resolve } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   entry: { app: './src/index.ts' },
@@ -55,7 +56,7 @@ module.exports = {
   },
   output: {
     filename: '[contenthash].js',
-    path: resolve(__dirname, './docs')
+    path: resolve(__dirname, './build')
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -65,7 +66,8 @@ module.exports = {
       template: resolve(__dirname, './static/index.html'),
       favicon: resolve(__dirname, './static/favicon.png')
     }),
-    new MiniCssExtractPlugin({ filename: '[contenthash].css' })
+    new MiniCssExtractPlugin({ filename: '[contenthash].css' }),
+    new CssMinimizerPlugin()
   ],
   target: ['web', 'es5'],
   mode: 'production'
