@@ -21,7 +21,7 @@ export class ArrayValue {
         = `${100 * this.value / this.maxSize}%`;
 
     const transitionDurations = {
-      height: 2000 / this.maxSize,
+      height: 2100 / this.maxSize,
       background: 500 / this.maxSize
     };
 

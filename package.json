@@ -19,7 +19,7 @@
     "babel-loader": "*",
     "clean-webpack-plugin": "*",
     "css-loader": "*",
-    "css-minimizer-webpack-plugin": "^4.0.0",
+    "css-minimizer-webpack-plugin": "*",
     "gh-pages": "^4.0.0",
     "html-webpack-plugin": "*",
     "mini-css-extract-plugin": "*",

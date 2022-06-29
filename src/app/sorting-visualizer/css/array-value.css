@@ -18,12 +18,6 @@
   }
 }
 
-.array-value
-{
-  transition-property: height;
-  transition-timing-function: ease-in-out;
-}
-
 .array-value[data-state='static']:nth-child(2n)
 {
   background: fixed #d6b136ff;

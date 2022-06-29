@@ -28,7 +28,7 @@
   border: none;
   flex-grow: 1;
   height: 2px;
-  margin-left: 1vmin;
+  margin-left: 3vmin;
 }
 
 .set-array-size-range::-moz-range-thumb
@@ -68,7 +68,7 @@
   align-items: flex-start;
   aspect-ratio: 1 / 1;
   background: none;
-  border: solid #1abc9cff 10px;
+  border: solid #1abc9cff 1vmin;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -147,7 +147,7 @@
 {
   aspect-ratio: 1 / 1;
   background: none;
-  border: solid #1abc9cff 20px;
+  border: solid #1abc9cff 2vmin;
   border-radius: 50%;
   cursor: pointer;
   height: 80%;
