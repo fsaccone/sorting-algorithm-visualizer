@@ -1,31 +1,31 @@
 declare module '*.css';
 declare module '*.png' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }
 declare module '*.jpg' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }
 declare module '*.jpeg' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }
 declare module '*.gif' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }
 declare module '*.svg' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }
 declare module '*.txt' {
-  const path: string;
+	const path: string;
 
-  export default path;
+	export default path;
 }

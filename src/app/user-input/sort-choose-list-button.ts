@@ -2,96 +2,99 @@ import { SortingAlgorithm } from 'index';
 import algImg from './img/algorithm.png';
 
 export class SortChooseListButton {
-  public readonly domNode = document.createElement('button');
-  public readonly buttonAlgorithmNodes: HTMLButtonElement[] = [];
-  public readonly selectAlgListDomNode = document.createElement('div');
+	public readonly domNode = document.createElement('button');
+	public readonly buttonAlgorithmNodes: HTMLButtonElement[] = [];
+	public readonly selectAlgListDomNode = document.createElement('div');
 
-  private readonly _sortAlgoritms = {
-    quick: SortingAlgorithm.QUICK,
-    bubble: SortingAlgorithm.BUBBLE,
-    insertion: SortingAlgorithm.INSERTION,
-    selection: SortingAlgorithm.SELECTION
-  };
+	private readonly _sortAlgoritms = {
+		quick: SortingAlgorithm.QUICK,
+		bubble: SortingAlgorithm.BUBBLE,
+		insertion: SortingAlgorithm.INSERTION,
+		selection: SortingAlgorithm.SELECTION
+	};
 
-  public constructor(
-    private readonly setSelectedAlgorithm: (alg: SortingAlgorithm) => void,
-    private readonly userInputDomNode: HTMLDivElement
-  ) {
-    this.setupDomNode();
-  }
+	public constructor(
+			private readonly setSelectedAlgorithm: (alg: SortingAlgorithm) => void,
+			private readonly userInputDomNode: HTMLDivElement
+	) {
+		this.setupDomNode();
+	}
 
-  public resetSelectedDomDataset(): void {
-    for (const buttonAlgorithmNode of this.buttonAlgorithmNodes) {
-      if (!(buttonAlgorithmNode instanceof HTMLButtonElement)) {
-        return;
-      }
+	public resetSelectedDomDataset(): void {
+		for (let i = 0; i < this.buttonAlgorithmNodes.length; i++) {
+			const buttonAlgorithmNode = this.buttonAlgorithmNodes[i];
 
-      buttonAlgorithmNode.dataset['selected'] = 'false';
-    }
-  }
+			if (!(buttonAlgorithmNode instanceof HTMLButtonElement)) {
+				return;
+			}
 
-  public hideSortList(): void {
-    this.domNode.dataset['opened'] = 'false';
-    this.showOrHideChildrenIfOpened('true');
-  }
+			buttonAlgorithmNode.dataset['selected'] = 'false';
+		}
+	}
 
-  private setupDomNode(): void {
-    this.domNode.classList.add('sort-choose-list-button');
-    this.resetSelectedDomDataset();
-    this.appendSelectButtons();
-    this.domNode.dataset['opened'] = 'false';
+	public hideSortList(): void {
+		this.domNode.dataset['opened'] = 'false';
+		this.showOrHideChildrenIfOpened('true');
+	}
 
-    const algImgDomNode = document.createElement('img');
+	private setupDomNode(): void {
+		this.domNode.classList.add('sort-choose-list-button');
+		this.resetSelectedDomDataset();
+		this.appendSelectButtons();
+		this.domNode.dataset['opened'] = 'false';
 
-    algImgDomNode.src = algImg;
-    this.domNode.append(algImgDomNode);
+		const algImgDomNode = document.createElement('img');
 
-    this.domNode.onclick = ev => {
-      ev.stopPropagation();
-      this.showOrHideChildrenIfOpened(this.domNode.dataset['opened']);
-    };
-  }
+		algImgDomNode.src = algImg;
+		this.domNode.append(algImgDomNode);
 
-  private showOrHideChildrenIfOpened(currentlyOpened?: string): void {
-    this.domNode.dataset['opened'] = currentlyOpened === 'true'
-      ? 'false'
-      : 'true';
-    setTimeout(() => {
-      this.selectAlgListDomNode.style.display
-          = `${currentlyOpened === 'true' ? 'none' : 'flex'}`;
-    }, currentlyOpened === 'true' ? 101 : 1);
-    setTimeout(() => {
-      this.selectAlgListDomNode.style.opacity
-          = currentlyOpened === 'true' ? '0' : '1';
-    }, currentlyOpened === 'true' ? 1 : 101);
-  }
+		this.domNode.onclick = ev => {
+			ev.stopPropagation();
+			this.showOrHideChildrenIfOpened(this.domNode.dataset['opened']);
+		};
+	}
 
-  private appendSelectButtons(): void {
-    this.selectAlgListDomNode.classList.add('select-alg-list');
-    [
-      this.selectAlgListDomNode.style.display,
-      this.selectAlgListDomNode.style.opacity
-    ] = [
-      'none',
-      '0'
-    ];
+	private showOrHideChildrenIfOpened(currentlyOpened?: string): void {
+		this.domNode.dataset['opened'] = currentlyOpened === 'true'
+			? 'false'
+			: 'true';
+		setTimeout(() => {
+			this.selectAlgListDomNode.style.display
+				= `${currentlyOpened === 'true' ? 'none' : 'flex'}`;
+		}, currentlyOpened === 'true' ? 101 : 1);
+		setTimeout(() => {
+			this.selectAlgListDomNode.style.opacity
+				= currentlyOpened === 'true' ? '0' : '1';
+		}, currentlyOpened === 'true' ? 1 : 101);
+	}
 
-    for (const [algName, alg] of Object.entries(this._sortAlgoritms)) {
-      const domNode = document.createElement('button');
+	private appendSelectButtons(): void {
+		this.selectAlgListDomNode.classList.add('select-alg-list');
+		[
+			this.selectAlgListDomNode.style.display,
+			this.selectAlgListDomNode.style.opacity
+		] = [
+			'none',
+			'0'
+		];
 
-      domNode.innerText = algName.toUpperCase();
+		for (let i = 0; i < Object.values(this._sortAlgoritms).length; i++) {
+			const [algName, alg] = Object.entries(this._sortAlgoritms)[i]!;
+			const domNode = document.createElement('button');
 
-      domNode.onclick = ev => {
-        ev.stopPropagation();
-        this.setSelectedAlgorithm(alg);
-        this.resetSelectedDomDataset();
-        domNode.dataset['selected'] = 'true';
-      };
+			domNode.innerText = algName.toUpperCase();
 
-      this.buttonAlgorithmNodes.push(domNode);
-      this.selectAlgListDomNode.append(domNode);
-    }
+			domNode.onclick = ev => {
+				ev.stopPropagation();
+				this.setSelectedAlgorithm(alg);
+				this.resetSelectedDomDataset();
+				domNode.dataset['selected'] = 'true';
+			};
 
-    this.userInputDomNode.append(this.selectAlgListDomNode);
-  }
+			this.buttonAlgorithmNodes.push(domNode);
+			this.selectAlgListDomNode.append(domNode);
+		}
+
+		this.userInputDomNode.append(this.selectAlgListDomNode);
+	}
 }

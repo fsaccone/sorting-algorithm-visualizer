@@ -1,23 +1,23 @@
 .sorting-visualizer
 {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: row;
-  flex-shrink: 1;
-  height: calc(100% - 20vmin);
-  justify-content: center;
-  margin: 0 1vw;
-  width: 98vw;
+	align-items: flex-end;
+	display: flex;
+	flex-direction: row;
+	flex-shrink: 1;
+	height: calc(100% - 20vmin);
+	justify-content: center;
+	margin: 0 1vw;
+	width: 98vw;
 }
 
 @media (orientation : portrait)
 {
 
-  .sorting-visualizer
-  {
-    align-items: flex-start;
-    flex-direction: column;
-    margin-left: 0;
-    margin-right: 2vw;
-  }
+	.sorting-visualizer
+	{
+		align-items: flex-start;
+		flex-direction: column;
+		margin-left: 0;
+		margin-right: 2vw;
+	}
 }

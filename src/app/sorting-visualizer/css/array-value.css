@@ -1,39 +1,39 @@
 @media (orientation : portrait)
 {
 
-  .array-value
-  {
-    border-radius: 0 100em 100em 0;
-    height: 100% !important;
-  }
+	.array-value
+	{
+		border-radius: 0 100em 100em 0;
+		height: 100% !important;
+	}
 }
 
 @media (orientation : landscape)
 {
 
-  .array-value
-  {
-    border-radius: 100em 100em 0 0;
-    width: 100% !important;
-  }
+	.array-value
+	{
+		border-radius: 100em 100em 0 0;
+		width: 100% !important;
+	}
 }
 
 .array-value[data-state='static']:nth-child(2n)
 {
-  background: fixed #d6b136ff;
+	background: fixed #d6b136ff;
 }
 
 .array-value[data-state='static']:nth-child(2n-1)
 {
-  background: fixed #d6cc36ff;
+	background: fixed #d6cc36ff;
 }
 
 .array-value[data-state='processing']
 {
-  background: fixed #c64f3eff;
+	background: fixed #c64f3eff;
 }
 
 .array-value[data-state='completed']
 {
-  background: fixed #24e829ff;
+	background: fixed #24e829ff;
 }

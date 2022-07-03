@@ -1,27 +1,27 @@
 html,
 body
 {
-  background: fixed #50aff5ff;
-  border: 0;
-  box-sizing: border-box;
-  height: 100%;
-  margin: 0;
-  outline: none;
-  overflow: hidden;
-  padding: 0;
-  user-select: none;
-  width: 100%;
+	background: fixed #50aff5ff;
+	border: 0;
+	box-sizing: border-box;
+	height: 100%;
+	margin: 0;
+	outline: none;
+	overflow: hidden;
+	padding: 0;
+	user-select: none;
+	width: 100%;
 }
 
-*:not(html):not(body)
+*:not(html, body)
 {
-  box-sizing: inherit;
-  outline: inherit;
-  user-select: inherit;
+	box-sizing: inherit;
+	outline: inherit;
+	user-select: inherit;
 }
 
 img
 {
-  max-height: 100%;
-  max-width: 100%;
+	max-height: 100%;
+	max-width: 100%;
 }
