@@ -1,4 +1,5 @@
 ﻿import 'css/index.css';
+import 'css/noscript.css';
 import { SortingVisualizer } from 'app/sorting-visualizer';
 import { UserInput } from 'app/user-input';
 export declare enum SortingAlgorithm {
