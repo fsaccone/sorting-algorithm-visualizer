@@ -23,13 +23,11 @@
     "gh-pages": "*",
     "html-webpack-plugin": "*",
     "mini-css-extract-plugin": "*",
-    "robotstxt-webpack-plugin": "*",
     "stylelint": "*",
     "stylelint-order": "*",
     "typescript": "*",
     "webpack": "*",
     "webpack-cli": "*",
-    "webpack-dev-server": "*",
-    "webpack-manifest-plugin": "*"
+    "webpack-dev-server": "*"
   }
 }
