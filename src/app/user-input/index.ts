@@ -17,6 +17,9 @@ export class UserInput {
 				() => this.getSelectedAlgorithm(),
 				() => {
 					this.blockInput();
+				},
+				() => {
+					this.unblockInput();
 				}
 		)
 	};
@@ -28,16 +31,30 @@ export class UserInput {
 		this.setupDomNode();
 	}
 
+	public blockStopStartButton(): void {
+		this.children['sort-start-button'].domNode.dataset['blocked'] = 'true';
+	}
+
 	public blockInput(): void {
-		this.domNode.style.pointerEvents = 'none';
-		this.domNode.dataset['blocked'] = 'true';
+		for (const [childName, child] of Object.entries(this.children)) {
+			if (childName === 'sort-start-button') {
+				continue;
+			}
+
+			child.domNode.dataset['blocked'] = 'true';
+		}
+
+		this.children['sort-start-button'].setAction('stop');
 		this.children['sort-choose-list'].hideSortList();
 	}
 
 	public unblockInput(): void {
-		this.domNode.style.pointerEvents = 'auto';
-		this.domNode.dataset['blocked'] = 'false';
+		for (const [childName, child] of Object.entries(this.children)) {
+			child.domNode.dataset['blocked'] = 'false';
+		}
+
 		this.selectedAlgorithm = null;
+		this.children['sort-start-button'].setAction('start');
 		this.children['sort-choose-list'].resetSelectedDomDataset();
 	}
 

@@ -6,6 +6,12 @@ export class SelectionAlg extends SortingAlgorithm {
 			let minIdx = i;
 
 			for (let j = i; j < this.array.length; j++) {
+				if (minIdx) {
+					this.check(minIdx, j);
+				} else {
+					this.check(j);
+				}
+
 				if (this.array[j]! < this.array[minIdx]!) {
 					minIdx = j;
 				}

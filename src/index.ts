@@ -5,7 +5,9 @@ import { UserInput } from 'app/user-input';
 
 export enum SortingAlgorithm {
 	QUICK,
+	HEAP,
 	BUBBLE,
+	OPTIMIZED_BUBBLE,
 	INSERTION,
 	SELECTION
 }

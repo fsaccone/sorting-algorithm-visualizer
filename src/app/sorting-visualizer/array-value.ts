@@ -5,7 +5,8 @@ export class ArrayValue {
 
 	public constructor(
 			public readonly domParentNode: HTMLDivElement,
-			private readonly maxSize: number,
+			private readonly animateValueMillisecondsNeeded: number,
+			private readonly maxValue: number,
 			public readonly value: number
 	) {
 		this.setupDomNode();
@@ -16,16 +17,10 @@ export class ArrayValue {
 		this.domNode.dataset['state'] = 'static';
 		this.domNode.dataset['value'] = String(this.value);
 		this.domNode.style.height = this.domNode.style.width
-			= `${100 * this.value / this.maxSize}%`;
-
-		const transitionDurations = {
-			height: 2100 / this.maxSize,
-			background: 500 / this.maxSize
-		};
-
-		this.domNode.style.transition
-			= `height ease-in-out ${transitionDurations.height}ms,`
-				+ `background linear ${transitionDurations.background}ms`;
+			= `${100 * this.value / this.maxValue}%`;
+		this.domNode.style.transition = `background linear ${
+			(this.animateValueMillisecondsNeeded * 10) / this.maxValue
+		}ms`;
 	}
 
 	private getCurrentValue(): number {

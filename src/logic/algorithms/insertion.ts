@@ -7,8 +7,12 @@ export class Insertion extends SortingAlgorithm {
 				continue;
 			}
 
-			for (let j = i; j > 0 && this.array[j - 1]! > this.array[j]!; j--) {
-				this.swap(j, j - 1);
+			for (let j = i; j > 0; j--) {
+				if (this.array[j - 1]! > this.array[j]!) {
+					this.swap(j, j - 1);
+				} else {
+					this.check(j, j - 1);
+				}
 			}
 		}
 	}

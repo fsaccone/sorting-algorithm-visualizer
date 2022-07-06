@@ -2,15 +2,18 @@ import './css/sorting-visualizer.css';
 import { ArrayValue } from './array-value';
 import { USER_INPUT } from 'index';
 
+type TQueueElement = 'check' | 'swap';
+
 export class SortingVisualizer {
 	public domNode = document.createElement('div');
 
 	private _array: number[] = [];
 	private _hasStartedSortVisualizing = false;
-	private _swapQueue: [number, number][] = [];
-	private readonly _swapMillisecondsNeeded = 100;
-	private readonly _finishedSortingDelayMilliseconds = 1000;
-	private readonly _finishAnimationFinishedIdleMilliseconds = 1000;
+	private _animationQueue: [TQueueElement, number[]][] = [];
+	private readonly _animateValueMillisecondsNeeded = 1e-5;
+	private readonly _finishedSortingMillisecondsPerElement = 10;
+	private readonly _finishedSortingMillisecondsBeforeAnimation = 1000;
+	private readonly _finishedSortingMillisecondsAfterAnimationBeforeReset = 1000;
 
 	public get array(): number[] {
 		return this._array;
@@ -22,106 +25,91 @@ export class SortingVisualizer {
 	}
 
 	public constructor(
-      public arraySize: number
+			public arraySize: number
 	) {
 		this.setupDomNode();
 		this.resetArray();
 	}
 
-	public addSwapArrayValuesToQueue(indexOne: number, indexTwo: number): void {
-		this._swapQueue.push([indexOne, indexTwo]);
+	public addToQueue(type: TQueueElement, ...indexes: number[]): void {
+		this._animationQueue.push([type, indexes]);
 	}
 
-	public startSwapping(): void {
+	public startAnimating(): void {
 		this._hasStartedSortVisualizing = true;
 
-		const loopSwapQueue = setInterval(() => {
-			const swap = this._swapQueue.shift();
+		const loopQueue = setInterval(() => {
+			const queueElement = this._animationQueue.shift();
 
-			if (!swap) {
+			if (!queueElement) {
 				return;
 			}
 
-			const [indexOne, indexTwo] = swap;
+			const type = queueElement[0];
 
-			[
-				this._array[indexOne], this._array[indexTwo]
-			] = [
-				this._array[indexTwo]!, this._array[indexOne]!
-			];
-
-			const childOne = this.domNode.children.item(indexOne)!;
-			const childTwo = this.domNode.children.item(indexTwo)!;
-
-			if (
-				childTwo instanceof HTMLDivElement
-				&& childOne instanceof HTMLDivElement
-			) {
-				childOne.dataset['state'] = 'processing';
-				childTwo.dataset['state'] = 'processing';
-				setTimeout(() => {
-					[
-						childOne.style.width,
-						childOne.style.height,
-						childTwo.style.width,
-						childTwo.style.height,
-						childOne.dataset['value'],
-						childTwo.dataset['value']
-					] = [
-						childTwo.style.width,
-						childTwo.style.height,
-						childOne.style.width,
-						childOne.style.height,
-						childTwo.dataset['value'],
-						childOne.dataset['value']
-					];
-				}, this._swapMillisecondsNeeded / 2);
-				setTimeout(() => {
-					childOne.dataset['state'] = 'static';
-					childTwo.dataset['state'] = 'static';
-				}, this._swapMillisecondsNeeded);
+			if (queueElement[1].length < 1) {
+				return;
 			}
 
-			this.playSound(
-					((this._array[indexOne] ?? 0) + (this._array[indexTwo] ?? 0)) / 2
-			);
+			switch (type) {
+				case 'swap':
+					this.animationSwap(queueElement[1][0]!, queueElement[1][1]!);
+					break;
+				case 'check':
+					this.animationCheck(...queueElement[1]);
+					break;
+				default:
+			}
 
-			if (this._swapQueue.length <= 0) {
+			if (this._animationQueue.length <= 0) {
 				this.finishSorting();
-				clearInterval(loopSwapQueue);
+				clearInterval(loopQueue);
 			}
-		}, ((1000 / this.arraySize) + this._swapMillisecondsNeeded));
+		}, ((1000 / this.arraySize) + this._animateValueMillisecondsNeeded));
 	}
 
 	public finishSorting(): void {
 		if (!this._hasStartedSortVisualizing) {
-			this.startSwapping();
+			this.startAnimating();
 			return;
 		}
 
-		this._swapQueue = [];
+		USER_INPUT.blockStopStartButton();
+		this._animationQueue = [];
 		this._hasStartedSortVisualizing = false;
 		setTimeout(() => {
 			this.domNode.childNodes.forEach((mChildNode, i) => {
 				setTimeout(() => {
 					if (mChildNode instanceof HTMLElement) {
-						this.playSound(Number(mChildNode.dataset['value']));
+						this.playSound(
+								Number(mChildNode.dataset['value']) || 0,
+								this._finishedSortingMillisecondsPerElement * (this.arraySize / 10)
+						);
 						mChildNode.dataset['state'] = 'completed';
+						setTimeout(() => {
+							mChildNode.dataset['state'] = 'static';
+						}, this._finishedSortingMillisecondsPerElement * (this.arraySize / 10));
 					}
 
 					if (i === this.domNode.childNodes.length - 1) {
-						setTimeout(() => {
-							this.resetArray();
-							USER_INPUT.unblockInput();
-						}, this._finishAnimationFinishedIdleMilliseconds);
+						setTimeout(
+								() => {
+									this.resetArray();
+									USER_INPUT.unblockInput();
+								},
+								this._finishedSortingMillisecondsAfterAnimationBeforeReset
+									+ (this._finishedSortingMillisecondsPerElement * (this.arraySize / 10))
+						);
 					}
-				}, (1000 / this.arraySize) * i);
+				}, this._finishedSortingMillisecondsPerElement * i);
 			});
-		}, this._finishedSortingDelayMilliseconds);
+		}, this._finishedSortingMillisecondsBeforeAnimation);
 	}
 
 	public resetArray(): void {
 		this.array = [];
+		this._animationQueue = [];
+		this._hasStartedSortVisualizing = false;
 
 		for (let i = 0; i < this.arraySize; i++) {
 			const randomNumber = Math.floor((Math.random() * this.arraySize) + 1);
@@ -137,6 +125,63 @@ export class SortingVisualizer {
 		this.onArrayUpdate(this.array);
 	}
 
+	private animationSwap(indexOne: number, indexTwo: number): void {
+		[
+			this._array[indexOne], this._array[indexTwo]
+		] = [
+			this._array[indexTwo]!, this._array[indexOne]!
+		];
+
+		const childOne = this.domNode.children.item(indexOne)!;
+		const childTwo = this.domNode.children.item(indexTwo)!;
+
+		if (
+			childTwo instanceof HTMLDivElement
+			&& childOne instanceof HTMLDivElement
+		) {
+			childOne.dataset['state'] = 'swapping';
+			childTwo.dataset['state'] = 'swapping';
+			setTimeout(() => {
+				[
+					childOne.style.width,
+					childOne.style.height,
+					childTwo.style.width,
+					childTwo.style.height,
+					childOne.dataset['value'],
+					childTwo.dataset['value']
+				] = [
+					childTwo.style.width,
+					childTwo.style.height,
+					childOne.style.width,
+					childOne.style.height,
+					childTwo.dataset['value'],
+					childOne.dataset['value']
+				];
+			}, this._animateValueMillisecondsNeeded / 2);
+			setTimeout(() => {
+				childOne.dataset['state'] = 'static';
+				childTwo.dataset['state'] = 'static';
+			}, this._animateValueMillisecondsNeeded);
+			this.playSound(Number(childOne.dataset['value']) || 0, this._animateValueMillisecondsNeeded * 1.5);
+			this.playSound(Number(childTwo.dataset['value']) || 0, this._animateValueMillisecondsNeeded * 1.5);
+		}
+	}
+
+	private animationCheck(...indexes: number[]): void {
+		for (let i = 0; i < indexes.length; i++) {
+			const index = indexes[i]!;
+			const child = this.domNode.children.item(index)!;
+
+			if (child instanceof HTMLDivElement) {
+				child.dataset['state'] = 'checking';
+				setTimeout(() => {
+					child.dataset['state'] = 'static';
+				}, this._animateValueMillisecondsNeeded);
+				this.playSound((Number(child.dataset['value']) || 0) * 2, this._animateValueMillisecondsNeeded * 1.5);
+			}
+		}
+	}
+
 	private setupDomNode(): void {
 		this.domNode.classList.add('sorting-visualizer');
 	}
@@ -150,17 +195,22 @@ export class SortingVisualizer {
 
 		for (let i = 0; i < this.array.length; i++) {
 			const value = this.array[i]!;
-			const arrayValue = new ArrayValue(this.domNode, this.arraySize, value);
+			const arrayValue = new ArrayValue(
+					this.domNode,
+					this._animateValueMillisecondsNeeded,
+					this.arraySize,
+					value
+			);
 
 			this.domNode.append(arrayValue.domNode);
 		}
 	}
 
-	private playSound(value: number): void {
+	private playSound(value: number, durationMs: number): void {
 		const audioCtx = new AudioContext();
-		const frequency = Math.floor((value / this.arraySize) * 400);
-		const volume = 1e-2;
-		const durationMs = 50;
+		const frequencyValueMultiplier = 700;
+		const frequency = Math.floor((value / this.arraySize) * frequencyValueMultiplier);
+		const volume = 5e-3;
 		const stoppingSoundDurationMs = durationMs / 10;
 		const oscillator = new OscillatorNode(audioCtx);
 		const gainNode = new GainNode(audioCtx);

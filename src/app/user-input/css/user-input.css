@@ -7,18 +7,18 @@
 	gap: 10%;
 	height: 20vmin;
 	justify-content: center;
-	transition: 0.7s;
 	width: 100vw;
-}
-
-.user-input[data-blocked='true']
-{
-	filter: grayscale(1);
 }
 
 .user-input *
 {
-	filter: inherit;
+	transition: 0.7s ease-in-out;
+}
+
+.user-input *[data-blocked='true']
+{
+	filter: grayscale(1) !important;
+	pointer-events: none !important;
 }
 
 .set-array-size-range
@@ -98,7 +98,7 @@
 	display: inline-flex;
 	filter: none;
 	flex-flow: column nowrap;
-	height: 35vh;
+	height: 45vh;
 	justify-content: flex-start;
 	left: 50vw;
 	overflow: hidden visible;
@@ -106,7 +106,7 @@
 	top: 21vmin;
 	transform: translateX(-50%);
 	transition: 0.25s;
-	width: 60vmin;
+	width: 70vmin;
 	z-index: 100;
 }
 
@@ -124,7 +124,7 @@
 	margin: 1vmin;
 	padding: 0.5vmin;
 	transition: 0.25s;
-	width: 70%;
+	width: 80%;
 }
 
 .select-alg-list button[data-selected='true']
@@ -153,7 +153,13 @@
 	height: 80%;
 	margin-right: 2vmin;
 	padding: 0;
+	pointer-events: all !important;
 	transition: 0.25s;
+}
+
+.sort-start-button[data-action='stop']:not([data-blocked='true'])
+{
+	border-color: #fd422dff;
 }
 
 .sort-start-button:hover

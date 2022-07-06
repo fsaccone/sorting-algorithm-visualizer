@@ -10,7 +10,11 @@ export abstract class SortingAlgorithm {
 	}
 
 	protected swap(indexOne: number, indexTwo: number): void {
-		if (this.array.length <= indexOne || this.array.length <= indexTwo) {
+		if (
+			this.array.length <= indexOne
+			|| this.array.length <= indexTwo
+			|| indexOne === indexTwo
+		) {
 			return;
 		}
 
@@ -21,7 +25,15 @@ export abstract class SortingAlgorithm {
 			this.array[indexTwo]!,
 			this.array[indexOne]!
 		];
-		SORTING_VISUALIZER.addSwapArrayValuesToQueue(indexOne, indexTwo);
+		SORTING_VISUALIZER.addToQueue('swap', indexOne, indexTwo);
+	}
+
+	protected check(...indexes: number[]): void {
+		if (indexes.some(i => this.array.length <= i)) {
+			return;
+		}
+
+		SORTING_VISUALIZER.addToQueue('check', ...indexes);
 	}
 
 	protected finish(): void {

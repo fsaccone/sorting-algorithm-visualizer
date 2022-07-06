@@ -3,7 +3,6 @@
 
 	.array-value
 	{
-		border-radius: 0 100em 100em 0;
 		height: 100% !important;
 	}
 }
@@ -13,22 +12,21 @@
 
 	.array-value
 	{
-		border-radius: 100em 100em 0 0;
 		width: 100% !important;
 	}
 }
 
-.array-value[data-state='static']:nth-child(2n)
+.array-value[data-state='static']
 {
 	background: fixed #d6b136ff;
 }
 
-.array-value[data-state='static']:nth-child(2n-1)
+.array-value[data-state='checking']
 {
-	background: fixed #d6cc36ff;
+	background: fixed #a653d7ff;
 }
 
-.array-value[data-state='processing']
+.array-value[data-state='swapping']
 {
 	background: fixed #c64f3eff;
 }

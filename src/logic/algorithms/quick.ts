@@ -23,16 +23,19 @@ export class Quick extends SortingAlgorithm {
 		return arr;
 	}
 
-	private partition(mArr: number[], idxOne: number, idxTwo: number): number {
+	private partition(arr: number[], idxOne: number, idxTwo: number): number {
 		let [i, j] = [idxOne, idxTwo];
-		const pivot = mArr[Math.floor((i + j) / 2)]!;
+		const iPivot = Math.floor((i + j) / 2);
+		const pivot = arr[iPivot]!;
+
+		this.check(iPivot);
 
 		while (i <= j) {
-			while (mArr[i]! < pivot) {
+			while (arr[i]! < pivot) {
 				i++;
 			}
 
-			while (mArr[j]! > pivot) {
+			while (arr[j]! > pivot) {
 				j--;
 			}
 
@@ -40,6 +43,8 @@ export class Quick extends SortingAlgorithm {
 				this.swap(i, j);
 				i++;
 				j--;
+			} else {
+				this.check(i, j);
 			}
 		}
 

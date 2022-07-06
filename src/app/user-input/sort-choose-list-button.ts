@@ -8,7 +8,9 @@ export class SortChooseListButton {
 
 	private readonly _sortAlgoritms = {
 		quick: SortingAlgorithm.QUICK,
+		heap: SortingAlgorithm.HEAP,
 		bubble: SortingAlgorithm.BUBBLE,
+		'optimized-bubble': SortingAlgorithm.OPTIMIZED_BUBBLE,
 		insertion: SortingAlgorithm.INSERTION,
 		selection: SortingAlgorithm.SELECTION
 	};
@@ -82,7 +84,9 @@ export class SortChooseListButton {
 			const [algName, alg] = Object.entries(this._sortAlgoritms)[i]!;
 			const domNode = document.createElement('button');
 
-			domNode.innerText = algName.toUpperCase();
+			domNode.innerText = algName
+					.replace('-', ' ')
+					.toUpperCase();
 
 			domNode.onclick = ev => {
 				ev.stopPropagation();
