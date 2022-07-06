@@ -2,6 +2,7 @@
     protected array: number[];
     run(): number[];
     protected swap(indexOne: number, indexTwo: number): void;
+    protected check(...indexes: number[]): void;
     protected finish(): void;
     protected abstract sort(): void;
 }

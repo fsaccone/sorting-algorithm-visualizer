@@ -14,6 +14,7 @@ export declare class UserInput {
     setArraySizeRange: SetArraySizeRange;
     selectedAlgorithm: TNullableAlgorithm;
     constructor();
+    blockStopStartButton(): void;
     blockInput(): void;
     unblockInput(): void;
     private setupDomNode;

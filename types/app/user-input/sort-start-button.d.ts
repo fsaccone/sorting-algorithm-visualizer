@@ -2,8 +2,12 @@
 export declare class SortStartButton {
     private readonly getSelectedAlgorithm;
     private readonly blockInput;
+    private readonly unblockInput;
     domNode: HTMLButtonElement;
-    constructor(getSelectedAlgorithm: () => SortingAlgorithm | null, blockInput: () => void);
+    private readonly _startSvgDomNode;
+    private readonly _stopSvgDomNode;
+    constructor(getSelectedAlgorithm: () => SortingAlgorithm | null, blockInput: () => void, unblockInput: () => void);
+    setAction(action: 'start' | 'stop'): void;
     private setupDomNode;
     private startAlgorithm;
 }
